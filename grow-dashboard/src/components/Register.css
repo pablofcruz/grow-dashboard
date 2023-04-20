@@ -1,0 +1,131 @@
+.registro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 0 16px;
+  }
+  .ButtonNext{
+    
+  }
+  
+  .registro__nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  
+  .registro__nav-item {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e3e3e3;
+    margin-right: 8px;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .registro__nav-item--active {
+    background-color: #4CAF50;
+  }
+  
+  .registro__page {
+    width: 100%;
+  }
+  
+  .registro__page > div {
+    margin-bottom: 24px;
+  }
+  
+  .registro__page > div > input {
+    display: block;
+    margin-bottom: 8px;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  }
+  
+  .registro__page > div > h3 {
+    margin-top: 0;
+  }
+  
+  .registro__page > div > p {
+    margin-bottom: 0;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .registro {
+      max-width: 800px;
+    }
+  
+    .registro__nav {
+      width: 600px;
+    }
+  
+    .registro__page {
+      width: 600px;
+    }
+  }
+  
+  .registro__input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .registro__input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 600px) {
+    .registro__input-container {
+      flex-direction: row;
+      align-items: center;
+    }
+  
+    .registro__input-container label,
+    .registro__input-container select {
+      width: 50%;
+      margin-bottom: 16px;
+    }
+    
+    .registro__input-container label:last-child,
+    .registro__input-container select:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 600px) {
+    .registro__input-container {
+      flex-direction: row;
+      align-items: center;
+    }
+  
+    .registro__input {
+      width: 50%;
+      margin-right: 16px;
+      margin-bottom: 0;
+    }
+  
+    .registro__input:last-child {
+      margin-right: 0;
+    }
+  }
+  #page-1, #page-2, #page-3, #page-4 {
+    color: transparent;
+  }
+  
+  
