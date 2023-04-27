@@ -1,98 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import '../components/Register.css';
-import { auth, signInWithGoogle} from '../Firebase'
-import { Button } from '@mui/material'
-import { Link} from 'react-router-dom';
+import { auth, signInWithGoogle, db} from '../Firebase'
+
+import {collection,getDocs, addDoc, updateDoc, doc, deleteDoc} from 'firebase/firestore'
+import Registro from '../components/Registro';
 
 const Register = () => {
-  
-  const [currentPage, setCurrentPage] = useState(1);
-  const [user, setUser] = useState(null);
+  const [newName, setnewName]= useState("")
+  const [newAge, setnewAge]= useState(0)
+  const [users, setUsers] = useState([])
+  const usersCollectionRef = collection(db, "users")
+  const UpdateUser = async (id, edad) => {
+   
+    const userDoc = doc(db, "users", id);
+    const newFields = { edad: edad + 1 };
+    await updateDoc(userDoc, newFields);
+  }
 
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
+  const createUser= async () =>{
+    await addDoc(usersCollectionRef, {nombre: newName, edad: Number(newAge)})
+  }
+  const deleteUser = async (id) =>{
+    const userDoc = doc (db, "users", id)
+    await deleteDoc(userDoc)
+
+  }
+
+  const getDocumentId = (index) => {
+    const userDoc = users[index];
+    return userDoc.id;
+  }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      setUser(user);
-    });
-    return unsubscribe;
+    const getUsers = async () =>{
+      const data = await getDocs(usersCollectionRef)
+      setUsers(data.docs.map((doc)=> ({...doc.data(), id: doc.id})))
+    }
+    getUsers()
   }, []);
-
-  const pages = [
-    { id: 'page-1', label: '1' },
-    { id: 'page-2', label: '2' },
-    { id: 'page-3', label: '3' },
-    { id: 'page-4', label: '4' },
-  ];
-
-  const isLastPage = currentPage === pages.length;
-
- 
 
   return (
     <div>
-      {user && (
-        <div className="registro">
-          <div className="registro__nav">
-            {pages.map((page, index) => (
-              <div
-                key={page.label}
-                className={`registro__nav-item ${
-                  index < currentPage ? 'registro__nav-item--active' : ''
-                }`}
-              ></div>
-            ))}
-          </div>
-          <div className="registro__page">
-            {currentPage === 1 && (
-              <div>
-                <h1>Digita el rut de tu empresa</h1>
-                <input type="text" placeholder="12345678-9" />
-              </div>
-            )}
-            {currentPage === 2 && (
-              <div>
-                <input type="text" placeholder="Nombre de la empresa" />
-                <h5>Boletas</h5>
-                <select type="text" placeholder="Ciudad" />
-                <h5>¿Qué facturador electrónico utilizas?</h5>
-                <select type="text" placeholder="Ciudad" />
-              </div>
-            )}
-            {currentPage === 3 && (
-              <div>
-                <h1>Conecta con el SII</h1>
-                <input type="password" placeholder="Contraseña del SII" />
-              </div>
-            )}
-            {currentPage === 4 && (
-              <div>
-                <h5>Conexión a tu banco</h5>
-              </div>
-            )}
-          
-            {currentPage === pages.length ? (
-        <Link to="/Home">
-          <Button variant="contained" size='large' color="success">
-            Crear cuenta
-          </Button>
-        </Link>
-             ) : (
-        <Button variant="contained" size='large' onClick={handleNextPage} color="success">
-          Siguiente
-        </Button>
-             )}
-                </div>
-              </div>
-            )}
+      {users.map((user, index)=>
+      {return(
+        <div key={index}>
+          <h1>nombre: {user.nombre}</h1> 
+          <h1>edad: {user.edad}</h1> 
+          <button onClick={()=> {UpdateUser(getDocumentId(index), user.edad)}}>añadir un año</button>
+          <button onClick={()=>{deleteUser(getDocumentId(index))}}>Eliminar usuario</button>
+        </div>
+      )})}
+      <Registro/>
+     
+</div>
+);
+}
+export default Register;
 
-            <button onClick={signInWithGoogle}>Sign In With Google</button>
-            
-   
 
-    </div>
-  );
-};
-export default Register
+
+
